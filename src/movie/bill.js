@@ -1,3 +1,7 @@
+const Ticket = require('./Ticket');
+
+allTickets = [];
+
 module.exports = class Bill {
 
     /**
@@ -9,7 +13,7 @@ module.exports = class Bill {
      * @param threeD    true if the movie's shown in 3D
      */
     startPurchase(runtime, dayOfWeek, loge, threeD) {
-
+        allTickets = [];
     }
 
     /**
@@ -19,7 +23,8 @@ module.exports = class Bill {
      * @param student true if the ticket buyer is a student
      */
     addTicket(age, student) {
-
+        let newTicket = new Ticket(age, student);
+        allTickets.push(newTicket);
     }
 
     /**
@@ -28,6 +33,14 @@ module.exports = class Bill {
      * @return total in dollars.
      */
     finishPurchase() {
-
+        if (allTickets.length >= 20) {
+            return allTickets
+                .map(ticket => {return ticket.calculatePriceForGroup()})
+                .reduce((a, b) => a + b, 0);
+        } else {
+            return allTickets
+                .map(ticket => {return ticket.calculatePrice()})
+                .reduce((a, b) => a + b, 0);
+        }
     }
 };
